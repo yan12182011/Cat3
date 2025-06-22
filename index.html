@@ -93,23 +93,8 @@
       background: #eee;
       color: #333;
       transform: rotateY(180deg);
-    }
-    .R { background-color: #b87333; }
-    .UR { background-color: silver; }
-    .LSR { background-color: gold; }
-    .SGR { background: black; border: 2px solid gold; }
-    .SC { background: linear-gradient(135deg, red, orange, yellow, green, blue, indigo, violet); }#message {
-  margin-top: 1rem;
-  min-height: 1.5rem;
-}
-
-.white-cat {
-  width: 140px;
-  height: 140px;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/16/White_Persian_Cat_PNG.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    }.card-front {
+  background-image: url("card-R.png"); /* default */
 }
 
   </style>
@@ -128,9 +113,7 @@
     <p id="message"></p>
     <div class="card" id="drawArea" onclick="flipCard()">
       <div class="card-inner">
-        <div class="card-front" id="cardFront" data-rarity="">
-          <div class="white-cat"></div>
-        </div>
+        <div class="card-front" id="cardFront" data-rarity=""></div>
         <div class="card-back">點擊翻牌</div>
       </div>
     </div>
@@ -214,7 +197,7 @@
       }
 
       const front = document.getElementById("cardFront");
-      front.className = "card-front " + rarity;
+      front.style.backgroundImage = `url(card-${rarity}.png)`;
       front.setAttribute("data-rarity", rarity);
       document.getElementById("message").textContent = `你抽到了 ${rarity} 卡！點擊翻牌`;
       saveCard(rarity);
