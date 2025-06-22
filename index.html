@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE html><html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -99,34 +98,29 @@
     .UR { background-color: silver; }
     .LSR { background-color: gold; }
     .SGR { background: black; border: 2px solid gold; }
-    .SC { background: linear-gradient(135deg, red, orange, yellow, green, blue, indigo, violet); }
+    .SC { background: linear-gradient(135deg, red, orange, yellow, green, blue, indigo, violet); }#message {
+  margin-top: 1rem;
+  min-height: 1.5rem;
+}
 
-    #message {
-      margin-top: 1rem;
-      min-height: 1.5rem;
-    }
+.white-cat {
+  width: 140px;
+  height: 140px;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/16/White_Persian_Cat_PNG.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-    .white-cat {
-      width: 140px;
-      height: 140px;
-      background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/16/White_Persian_Cat_PNG.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
   </style>
 </head>
 <body>
-  <h1>貓咪抽卡機</h1>
-
-  <div id="login">
-    <p>請輸入暱稱開始遊戲：</p>
-    <input type="text" id="nickname" placeholder="輸入暱稱" />
+  <h1>貓咪抽卡機</h1>  <div id="login">
+    <p>請輸入曉名開始遊戲：</p>
+    <input type="text" id="nickname" placeholder="輸入曉名" />
     <br />
     <button onclick="start()">登入</button>
-  </div>
-
-  <div id="main">
+  </div>  <div id="main">
     <p id="userInfo"></p>
     <button onclick="drawCard()">抽卡</button>
     <button onclick="showBag()">包包</button>
@@ -140,149 +134,150 @@
         <div class="card-back">點擊翻牌</div>
       </div>
     </div>
-  </div>
+  </div><audio id="flipSound" src="https://cdn.pixabay.com/audio/2022/03/10/audio_a4f90a5dc0.mp3"></audio> <audio id="drawSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d8b9571a5e.mp3"></audio>
+
   <script>
-  const rarities = [
-    { name: "SC", chance: 0.01 },
-    { name: "SGR", chance: 0.03 },
-    { name: "LSR", chance: 0.04 },
-    { name: "UR", chance: 0.12 },
-    { name: "R", chance: 0.80 }
-  ];
+    const rarities = [
+      { name: "SC", chance: 0.01 },
+      { name: "SGR", chance: 0.03 },
+      { name: "LSR", chance: 0.04 },
+      { name: "UR", chance: 0.12 },
+      { name: "R", chance: 0.80 }
+    ];
 
-  let user = null;
-  const maxDraws = 5;
+    let user = null;
+    const maxDraws = 5;
 
-  function start() {
-    const name = document.getElementById("nickname").value.trim();
-    if (!name) return alert("請輸入暱稱");
-    user = name;
-    if (!localStorage[user]) {
-      const init = {
-        cards: {},
-        vip: 0,
-        lastDate: "",
-        draws: 0
-      };
-      localStorage[user] = JSON.stringify(init);
-      localStorage.lastUser = user;
-    }
-    loadData();
-    document.getElementById("login").style.display = "none";
-    document.getElementById("main").style.display = "block";
-  }
-
-  function logout() {
-    user = null;
-    document.getElementById("main").style.display = "none";
-    document.getElementById("login").style.display = "block";
-  }
-
-  function loadData() {
-    const data = JSON.parse(localStorage[user]);
-    const today = new Date().toISOString().split("T")[0];
-    if (data.lastDate !== today) {
-      data.draws = 0;
-      data.lastDate = today;
-    }
-    localStorage[user] = JSON.stringify(data);
-    updateUI(data);
-  }
-
-  function updateUI(data) {
-    document.getElementById("userInfo").textContent =
-      `暱稱：${user}　VIP 等級：${data.vip}　今日已抽 ${data.draws}/${maxDraws}`;
-  }
-
-  function drawCard() {
-    const data = JSON.parse(localStorage[user]);
-    if (data.draws >= maxDraws) {
-      document.getElementById("message").textContent = "今天已經抽滿了！";
-      return;
+    function start() {
+      const name = document.getElementById("nickname").value.trim();
+      if (!name) return alert("請輸入暱稱");
+      user = name;
+      if (!localStorage[user]) {
+        const init = {
+          cards: {},
+          vip: 0,
+          lastDate: "",
+          draws: 0
+        };
+        localStorage[user] = JSON.stringify(init);
+        localStorage.lastUser = user;
+      }
+      loadData();
+      document.getElementById("login").style.display = "none";
+      document.getElementById("main").style.display = "block";
     }
 
-    const roll = Math.random();
-    let sum = 0;
-    let rarity = "R";
+    function logout() {
+      user = null;
+      document.getElementById("main").style.display = "none";
+      document.getElementById("login").style.display = "block";
+    }
 
-    for (let r of rarities) {
-      sum += r.chance;
-      if (roll <= sum) {
-        rarity = r.name;
-        break;
+    function loadData() {
+      const data = JSON.parse(localStorage[user]);
+      const today = new Date().toISOString().split("T")[0];
+      if (data.lastDate !== today) {
+        data.draws = 0;
+        data.lastDate = today;
+      }
+      localStorage[user] = JSON.stringify(data);
+      updateUI(data);
+    }
+
+    function updateUI(data) {
+      document.getElementById("userInfo").textContent =
+        `暱稱：${user}　VIP 等級：${data.vip}　今日已抽 ${data.draws}/${maxDraws}`;
+    }
+
+    function drawCard() {
+      document.getElementById("drawSound").play();
+      const data = JSON.parse(localStorage[user]);
+      if (data.draws >= maxDraws) {
+        document.getElementById("message").textContent = "今天已經抽滿了！";
+        return;
+      }
+
+      const roll = Math.random();
+      let sum = 0;
+      let rarity = "R";
+
+      for (let r of rarities) {
+        sum += r.chance;
+        if (roll <= sum) {
+          rarity = r.name;
+          break;
+        }
+      }
+
+      if (rarity === "SC" && (data.cards["SC"] || 0) >= 1) {
+        rarity = "SGR";
+      }
+
+      const front = document.getElementById("cardFront");
+      front.className = "card-front " + rarity;
+      front.setAttribute("data-rarity", rarity);
+      document.getElementById("message").textContent = `你抽到了 ${rarity} 卡！點擊翻牌`;
+      saveCard(rarity);
+      updateUI(data);
+
+      document.getElementById("drawArea").classList.remove("flipped");
+      void drawArea.offsetWidth;
+      setTimeout(() => {
+        document.getElementById("drawArea").classList.add("flipped");
+      }, 100);
+    }
+
+    function flipCard() {
+      document.getElementById("flipSound").play();
+      document.getElementById("drawArea").classList.toggle("flipped");
+    }
+
+    function saveCard(rarity) {
+      const data = JSON.parse(localStorage[user]);
+      if (!data.cards[rarity]) data.cards[rarity] = 0;
+      data.cards[rarity]++;
+      data.draws++;
+      updateVip(data);
+      localStorage[user] = JSON.stringify(data);
+    }
+
+    function updateVip(data) {
+      let required = 30;
+      for (let i = 1; i <= data.vip; i++) {
+        required += Math.ceil(required * 0.5);
+      }
+
+      const score = 
+        (data.cards["R"] || 0) +
+        (data.cards["UR"] || 0) * 2 +
+        (data.cards["LSR"] || 0) * 6 +
+        (data.cards["SGR"] || 0) * 10 +
+        (data.cards["SC"] || 0) * 20;
+
+      if (score >= required) {
+        data.vip++;
       }
     }
 
-    if (rarity === "SC" && (data.cards["SC"] || 0) >= 1) {
-      rarity = "SGR"; // SC 限制只有 1 張
+    function showBag() {
+      const data = JSON.parse(localStorage[user]);
+      const entries = Object.entries(data.cards || {});
+      if (entries.length === 0) {
+        alert("你還沒有卡片！");
+        return;
+      }
+      let msg = "目前卡片數量：\n";
+      for (let [rarity, count] of entries) {
+        msg += `${rarity}：${count} 張\n`;
+      }
+      alert(msg);
     }
 
-    const front = document.getElementById("cardFront");
-    front.className = "card-front " + rarity;
-    front.setAttribute("data-rarity", rarity);
-    document.getElementById("message").textContent = `你抽到了 ${rarity} 卡！點擊翻牌`;
-    saveCard(rarity);
-    updateUI(data);
-
-    // 翻面動畫
-    document.getElementById("drawArea").classList.remove("flipped");
-    void drawArea.offsetWidth; // 重觸發動畫
-    setTimeout(() => {
-      document.getElementById("drawArea").classList.add("flipped");
-    }, 100);
-  }
-
-  function flipCard() {
-    document.getElementById("drawArea").classList.toggle("flipped");
-  }
-
-  function saveCard(rarity) {
-    const data = JSON.parse(localStorage[user]);
-    if (!data.cards[rarity]) data.cards[rarity] = 0;
-    data.cards[rarity]++;
-    data.draws++;
-    updateVip(data);
-    localStorage[user] = JSON.stringify(data);
-  }
-
-  function updateVip(data) {
-    let required = 30;
-    for (let i = 1; i <= data.vip; i++) {
-      required += Math.ceil(required * 0.5);
-    }
-
-    const score = 
-      (data.cards["R"] || 0) +
-      (data.cards["UR"] || 0) * 2 +
-      (data.cards["LSR"] || 0) * 6 +
-      (data.cards["SGR"] || 0) * 10 +
-      (data.cards["SC"] || 0) * 20;
-
-    if (score >= required) {
-      data.vip++;
-    }
-  }
-
-  function showBag() {
-    const data = JSON.parse(localStorage[user]);
-    const entries = Object.entries(data.cards || {});
-    if (entries.length === 0) {
-      alert("你還沒有卡片！");
-      return;
-    }
-    let msg = "目前卡片數量：\n";
-    for (let [rarity, count] of entries) {
-      msg += `${rarity}：${count} 張\n`;
-    }
-    alert(msg);
-  }
-
-  window.onload = () => {
-    if (localStorage.lastUser) {
-      document.getElementById("nickname").value = localStorage.lastUser;
-    }
-    document.getElementById("login").style.display = "block";
-  };
-</script>
-</body>
+    window.onload = () => {
+      if (localStorage.lastUser) {
+        document.getElementById("nickname").value = localStorage.lastUser;
+      }
+      document.getElementById("login").style.display = "block";
+    };
+  </script></body>
 </html>
