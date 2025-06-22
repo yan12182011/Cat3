@@ -89,14 +89,15 @@
       border-radius: 0.5rem;
       font-size: 0.8rem;
     }
+    .card-front {
+      background-image: url("card-R.png"); /* default */
+    }
     .card-back {
-      background: #eee;
-      color: #333;
+      background-image: url("Ggggg.png");
+      background-size: cover;
+      background-position: center;
       transform: rotateY(180deg);
-    }.card-front {
-  background-image: url("card-R.png"); /* default */
-}
-
+    }
   </style>
 </head>
 <body>
@@ -114,7 +115,7 @@
     <div class="card" id="drawArea" onclick="flipCard()">
       <div class="card-inner">
         <div class="card-front" id="cardFront" data-rarity=""></div>
-        <div class="card-back">點擊翻牌</div>
+        <div class="card-back"></div>
       </div>
     </div>
   </div><audio id="flipSound" src="https://cdn.pixabay.com/audio/2022/03/10/audio_a4f90a5dc0.mp3"></audio> <audio id="drawSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d8b9571a5e.mp3"></audio>
